@@ -28,7 +28,7 @@ OPTFLAGS ?= -Og -g # -O3
 # Flags that need to be used during both compilation and linking.
 CODEGENFLAGS ?= -fsanitize=undefined -fsanitize=address
 
-# All flags passed to the C compiler to compile object files.
+# All flags passed to the C compiler to compile both C and C++ files.
 CCFLAGS ?= -MMD
 
 CCFLAGS += $(INCLUDES)
