@@ -1,5 +1,5 @@
 # All objects.
-OBJECTS = \
+OBJECTS ?= \
 	src/main.o \
 	# more files
 
