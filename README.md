@@ -4,7 +4,7 @@ Best used with `make -s` to silence command invocations.
 
 This makefile is intended to be included in a top-level Makefile, like:
 
-```
+```make
 OBJECTS = src/main.o src/foo.o src/bar.o
 
 include deps/c-build/build.mk
