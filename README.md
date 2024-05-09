@@ -7,6 +7,11 @@ This makefile is intended to be included in a top-level Makefile, like:
 ```make
 OBJECTS = src/main.o src/foo.o src/bar.o
 
+INCLUDES = include/
+
+# Package names passed to `pkg-config`
+PACKAGES = openssl
+
 include deps/c-build/build.mk
 ```
 
