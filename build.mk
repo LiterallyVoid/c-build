@@ -15,6 +15,10 @@ PACKAGES ?= # openssl
 # Include directory flags.
 INCLUDES ?= # -Iinclude/
 
+# `c2x` because everybody deserves separators within numeric literals
+CSTANDARD = -std=c2x
+CXXSTANDARD = # -std=c++20
+
 # Warnings.
 WARNINGS ?= -Wall -Wextra -Wmissing-prototypes
 
@@ -33,8 +37,11 @@ CCFLAGS += $(OPTFLAGS)
 CCFLAGS += $(CODEGENFLAGS)
 
 # Flags passed for C or C++ files, respectively.
-CFLAGS ?=	$(CCFLAGS) -std=c2x
-CXXFLAGS ?=	$(CCFLAGS)
+CFLAGS += $(CCFLAGS)
+CFLAGS += $(CSTANDARD)
+
+CXXFLAGS +=	$(CCFLAGS)
+CXXFLAGS += $(CXXSTANDARD)
 
 # Flags passed to the C compiler to link all object files together into the final executable.
 LDFLAGS ?= # -L/usr/lib64/
