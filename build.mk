@@ -23,7 +23,7 @@ CXXSTANDARD = # -std=c++20
 WARNINGS ?= -Wall -Wextra -Wmissing-prototypes
 
 # Optimization flags.
-OPTFLAGS ?= -Og -g # -O3
+OPTFLAGS ?= -O0 -g # -O3
 
 # Flags that need to be used during both compilation and linking.
 CODEGENFLAGS ?= -fsanitize=undefined -fsanitize=address
