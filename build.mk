@@ -19,6 +19,8 @@ INCLUDES ?= # -Iinclude/
 CSTANDARD = -std=c2x
 CXXSTANDARD = # -std=c++20
 
+EXPORT_COMPILE_COMMANDS ?= yes
+
 # Warnings.
 WARNINGS ?= -Wall -Wextra -Wmissing-prototypes
 
@@ -61,6 +63,20 @@ OBJECTS := $(OBJECTS:%=$(BUILD_DIR)/%)
 
 all: $(BUILD_DIR)/$(EXE) $(BUILD_DIR)/compile_commands.json
 
+ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
+
+all: $(BUILD_DIR)/compile_commands.json
+
+$(BUILD_DIR)/compile_commands.json: $(OBJECTS:%.o=%.compile_commands.json)
+	@printf "Exporting %s\n" "$@"
+	( echo "["; cat $^; echo "]" ) > $@
+
+endif
+
+$(BUILD_DIR)/$(EXE): $(OBJECTS)
+	@printf "Linking %s\n" "$@"
+	$(CC) $^ -o $@ $(LDFLAGS)
+
 # Note: leaves directory structure in place.
 clean:
 	rm -f $(OBJECTS)
@@ -84,24 +100,20 @@ $(BUILD_DIR)/%.o $(BUILD_DIR)/%.compile_commands.json: %.c
 	@printf "Compiling %s\n" "$<"
 
 	$(MKDIR_P) $(@D)
-	$(CC) \
-		-c $< -o $(BUILD_DIR)/$*.o \
-		$(CFLAGS) \
-		-MJ $(BUILD_DIR)/$*.compile_commands.json
+
+ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
+	$(CC) -c $< -o $(BUILD_DIR)/$*.o $(CFLAGS) -MJ $(BUILD_DIR)/$*.compile_commands.json
+else
+	$(CC) -c $< -o $(BUILD_DIR)/$*.o $(CFLAGS)
+endif
 
 $(BUILD_DIR)/%.o $(BUILD_DIR)/%.compile_commands.json: %.cpp
 	@printf "Compiling %s\n" "$<"
 
 	$(MKDIR_P) $(@D)
-	$(CXX) \
-		-c $< -o $(BUILD_DIR)/$*.o \
-		$(CXXFLAGS) \
-		-MJ $(BUILD_DIR)/$*.compile_commands.json
 
-$(BUILD_DIR)/$(EXE): $(OBJECTS)
-	@printf "Linking %s\n" "$@"
-	$(CC) $^ -o $@ $(LDFLAGS)
-
-$(BUILD_DIR)/compile_commands.json: $(OBJECTS:%.o=%.compile_commands.json)
-	@printf "Exporting %s\n" "$@"
-	( echo "["; cat $^; echo "]" ) > $@
+ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
+	$(CXX) -c $< -o $(BUILD_DIR)/$*.o $(CXXFLAGS) -MJ $(BUILD_DIR)/$*.compile_commands.json
+else
+	$(CXX) -c $< -o $(BUILD_DIR)/$*.o $(CXXFLAGS)
+endif
