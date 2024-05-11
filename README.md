@@ -18,7 +18,7 @@ include deps/c-build/build.mk
 Features:
 
   * Header file dependency tracking (it runs the C compiler with `-MMD`)
-  * Generate `compile_commands.json` (it runs the C compiler with `-MJ`; hope you're using `clang`!)
+  * Generate `compile_commands.json` (it runs the C compiler with `-MJ`; if you're not using `clang`, run `EXPORT_COMPILE_COMMANDS=no make` instead.)
 
 Caveats:
 
