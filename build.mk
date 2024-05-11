@@ -75,6 +75,9 @@ endif
 
 $(BUILD_DIR)/$(EXE): $(OBJECTS)
 	@printf "Linking %s\n" "$@"
+
+	@$(MKDIR_P) $(@D)
+
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 # Note: leaves directory structure in place.
@@ -99,7 +102,7 @@ clean:
 $(BUILD_DIR)/%.o $(BUILD_DIR)/%.compile_commands.json: %.c
 	@printf "Compiling %s\n" "$<"
 
-	$(MKDIR_P) $(@D)
+	@$(MKDIR_P) $(@D)
 
 ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
 	$(CC) -c $< -o $(BUILD_DIR)/$*.o $(CFLAGS) -MJ $(BUILD_DIR)/$*.compile_commands.json
@@ -110,7 +113,7 @@ endif
 $(BUILD_DIR)/%.o $(BUILD_DIR)/%.compile_commands.json: %.cpp
 	@printf "Compiling %s\n" "$<"
 
-	$(MKDIR_P) $(@D)
+	@$(MKDIR_P) $(@D)
 
 ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
 	$(CXX) -c $< -o $(BUILD_DIR)/$*.o $(CXXFLAGS) -MJ $(BUILD_DIR)/$*.compile_commands.json
