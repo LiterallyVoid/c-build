@@ -45,6 +45,10 @@ CFLAGS += $(CSTANDARD)
 CXXFLAGS +=	$(CCFLAGS)
 CXXFLAGS += $(CXXSTANDARD)
 
+# The C compiler used to link this project.
+# Set this to $(CXX) if you're writing a C++ project.
+CC_LINK ?= $(CC)
+
 # Flags passed to the C compiler to link all object files together into the final executable.
 LDFLAGS ?= # -L/usr/lib64/
 
@@ -78,7 +82,7 @@ $(BUILD_DIR)/$(EXE): $(OBJECTS)
 
 	@$(MKDIR_P) $(@D)
 
-	$(CC) $^ -o $@ $(LDFLAGS)
+	$(CC_LINK) $^ -o $@ $(LDFLAGS)
 
 # Note: leaves directory structure in place.
 clean:
