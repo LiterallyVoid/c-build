@@ -16,8 +16,8 @@ PACKAGES ?= # openssl
 INCLUDES ?= # -Iinclude/
 
 # `c2x` because everybody deserves separators within numeric literals
-CSTANDARD = -std=c2x
-CXXSTANDARD = # -std=c++20
+CSTANDARD ?= -std=c2x
+CXXSTANDARD ?= -std=c++20
 
 EXPORT_COMPILE_COMMANDS ?= yes
 
