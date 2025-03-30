@@ -124,3 +124,25 @@ ifeq ($(EXPORT_COMPILE_COMMANDS),yes)
 else
 	$(CXX) -c $< -o $(BUILD_DIR)/$*.o $(CXXFLAGS)
 endif
+
+# usage:
+#   make watch
+#   make watch COMMAND=build
+#
+# Passing no `COMMAND` runs `make` with no target, which implies the target `all` (as the first target in the Makefile)
+watch:
+	PID=;	\
+	while true; do \
+		clear;	\
+		$(MAKE) -sj $(COMMAND);	\
+		RESULT=$$?;	\
+		if [[ "$$PID" != "" ]]; then \
+			kill $$PID;	\
+			PID="";	\
+		fi; \
+		if [[ $$RESULT -eq 0 ]]; then \
+			./$(BUILD_DIR)/$(EXE) &	\
+			PID=$$!;	\
+		fi; \
+		inotifywait -qre close_write *;	\
+	done
